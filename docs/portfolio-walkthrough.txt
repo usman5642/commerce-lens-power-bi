@@ -1,0 +1,57 @@
+COMMERCE LENS — INTERVIEW WALKTHROUGH
+
+Purpose
+Explore merchandise sales, product seasonality and international markets,
+while keeping credit notes and missing customer IDs visible in the analysis.
+This is an independent portfolio project using public historical data.
+
+Start with the default view
+2011 / Complete / All markets covers January–November 2011.
+Net merchandise sales are £8.57m, with 17,407 sales orders and 4,168
+identified buyers. The like-for-like prior-year increase is 2.3%.
+
+Demonstrate five concrete BI skills
+
+1. Metric definition and reconciliation
+Explain why net merchandise sales equal gross merchandise line values less
+posted merchandise credits. Distinguish this from profit or audited revenue.
+Show the Decimal/CSV reconciliation alongside the native DAX results.
+
+2. Reliable time intelligence
+Select the partial period in 2011. The dataset ends on 9 December, so the
+prior comparison uses 1–9 December 2010, not the entire previous December.
+Select 2010 to show why a whole-year comparison is unavailable.
+
+3. Data modelling and transparent data quality
+Explain the date, country, product and customer dimensions, namespaced
+measures and the explicitly ordered purchase-frequency bands.
+Show that customer-ID coverage is 86.5% of gross sales in the default view.
+Unknown customers remain in sales totals but are excluded from buyer counts.
+
+4. Interactive visual analysis
+Click the Netherlands bar: net sales become £262,997.04, with 87 sales
+orders and 8 identified buyers. The product and monthly views react.
+Clear the selection, then click the Regency Cakestand heatmap row.
+Explain why the matrix reports £ thousands and why its total is only the
+top ten products, not the whole-business total.
+
+5. Honest communication and performance testing
+Credits are on their posting date, so the credit/gross percentage is not
+an item return rate. Explain unmatched map locations and the URL map
+dependency. Show the recorded native visual performance test without
+presenting one measured run as a guaranteed service-level target.
+
+Avoid claiming
+- Client results or an NDA project: this uses public data.
+- Business improvements caused by this dashboard.
+- Profit, web conversions, customer lifetime value or churn prediction.
+- That every repeat buyer was acquired during the selected period.
+- That the 2011 partial-period increase represents a full December result.
+
+Reset
+Use Power BI's Reset to default control to restore the saved slicers.
+Click an already-selected chart item again to clear a transient chart selection.
+
+Reproduce the data reconciliation
+With Python 3, run verify_final.py. It uses only the standard library and
+the eight included cleaned CSVs. No credentials or client data are required.

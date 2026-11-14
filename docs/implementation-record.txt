@@ -1,0 +1,99 @@
+NOTE FOR THE PUBLIC COPY: this is the implementation record written when the
+final changes were made in Power BI Service. The private report link has been
+removed. "Implemented" and "PASS" entries are the recorded results of that
+session, not tests re-run for this repository.
+
+COMMERCE LENS — FINAL IMPLEMENTATION RECORD
+14 November 2026
+
+Implemented in Power BI Service, not a static dashboard mock-up.
+The report and semantic model were saved. The saved report was reloaded and
+tested in reading mode. Its source is the public UCI Online Retail II snapshot.
+
+VISUAL CHANGES
+- 1600 x 1100 single-page overview with a slate background, Arial typography,
+  teal KPI accents and copper comparison series.
+- Six KPI cards, including customer-ID sales coverage. Order/buyer counts
+  are exact integers rather than rounded thousands.
+- Three readable dropdown controls: year, month coverage, market.
+- Year is single-select. The default is 2011, complete months, all markets.
+- Country map with verified US/Czech name aliases and logarithmic colour
+  intensity. Tooltip values remain actual money and order counts.
+- Map coverage is explicitly quantified; unmatched sales remain in totals.
+- Top-10 product heatmap in GBP thousands. Months are chronological;
+  products are ranked by total net sales. Both 11- and 12-month views fit.
+- Monthly current/prior-year sales lines, dashed prior year, with a dynamic
+  like-for-like comparison caption. Incomplete full-year coverage is labelled.
+- Credit values and credit/gross rates are shown on separate currency and
+  percentage axes in one combination chart.
+- Top-eight international market filter, excluding the UK from the ranking.
+  The title changes when no international sales are selected.
+- Buyer frequency uses the explicit BandOrder column, ascending order,
+  exact labels, and a repeat-purchase subtitle.
+- Public-source attribution and accounting/coverage limitations remain visible.
+
+MODEL CHANGES
+- Added 41 namespaced CL measures and three calculated columns.
+- Preserved existing measure expressions, relationships and source queries
+  used by the other report sharing this model.
+- Set PurchaseBand[Band] to sort by BandOrder.
+- Added Date[CL Month], sorted by MonthNumber, without changing the existing
+  Date[MonthName] column used by other reports.
+- Prior-year calculations use the same source-available calendar dates.
+- Did not assume the ambiguous source label Korea means South Korea.
+- The two small TMDL correction files supersede the matching measures in
+  CommerceLens_additive_measures.tmdl.
+
+TESTS PERFORMED
+PASS — Native DAX queries: 2011 complete, 2011 partial, 2010 complete;
+       prior-year availability and chronological month order.
+PASS — Independent Python Decimal/CSV reconciliation: nine assertions.
+       Default net £8,572,828.103; 17,407 orders; 4,168 identified buyers.
+       Comparable prior net £8,377,737.824; +2.3287%.
+       Partial 2011 net £440,399.56; comparable prior £401,141.88.
+       UK net £7,192,114.073; international net £1,380,714.03.
+       Top-ten product total £695,321.33.
+PASS — Reader view, 2010: £9.14M, 19,627 orders, 4,205 buyers;
+       twelve months fit without heatmap scrolling.
+PASS — Reader view, partial 2011: £440.40K, 816 orders, 614 buyers,
+       +9.8% versus the same dates a year earlier.
+PASS — UK only: £7.19M; +0.2%; no international bars.
+PASS — International only: £1.38M; 1,690 orders; 399 buyers; +15.1%.
+PASS — Netherlands bar click: KPI becomes £263.00K, 87 orders, 8 buyers;
+       the map, product matrix and trends react.
+PASS — Regency Cakestand row click: KPI becomes £131.85K and 1,757 orders;
+       the related country and monthly visuals react.
+PASS — Service Reset to default restores 2011/Complete/All.
+PASS — Save/reload preserves the implementation and default selection.
+PASS — Final native DAX checks: updated coverage captions, blank dates and
+       multiple-year guards. Empty dates return "No sales in selection";
+       a multi-year context suppresses the prior-year comparison. The final
+       four-row native query completed successfully in 2,232 ms.
+PASS — Power BI Performance Analyzer refresh capture: visual durations
+       108–1,342 ms in this session. This is one measured run, not a latency SLA.
+PASS — Layout inspected at 1440 x 900. The browser viewport override was
+       restored afterwards. The report scales down in the narrow side panel.
+
+SCOPE AND LIMITATIONS
+- The custom map file-upload control is disabled in this Service editor.
+  The report therefore retains its URL-based map boundary dependency,
+  including Antarctica. An offline map is not claimed.
+- The data is historical, not a live business feed. No profit, traffic,
+  conversion, causal return-rate or client-impact claims are made.
+- Credits are attributed to credit posting dates, not original sale dates.
+- Customer analysis excludes unknown IDs; sales do not exclude them.
+- A 2010 December point can have a valid December 2009 comparison even
+  though the whole 2010 prior-year comparison is unavailable.
+- The browser slicers omit impossible combinations, such as a partial
+  month in 2010. A wholly empty-report state was not forced via the UI;
+  its calculation guards were tested directly in the native DAX engine.
+- Mobile-specific layout, screen-reader tab-order audit and Power BI Desktop
+  execution were not tested. This is the desktop/web portfolio overview.
+- Claude's design was adapted rather than copied mechanically: dropdown
+  controls, a 1100-pixel canvas, native Service reset and consolidated context
+  captions were used. Per-KPI YoY reference labels were not added.
+- Scheduled-refresh settings and Desktop auto-date/time were not changed.
+
+Supporting evidence in this repository: docs/test-record.md (values from the
+Service test logs, which are kept privately), validation/verify_final.py,
+validation/independent_reconciliation.json and docs/images/commerce-lens-overview.png.

@@ -1,0 +1,293 @@
+createOrReplace
+
+	ref table Sales
+
+		measure 'CL Source First Date' =
+				CALCULATE ( MIN ( Sales[Date] ), REMOVEFILTERS () )
+			displayFolder: Commerce Lens
+			formatString: yyyy-mm-dd
+
+		measure 'CL Source Last Date' =
+				CALCULATE ( MAX ( Sales[Date] ), REMOVEFILTERS () )
+			displayFolder: Commerce Lens
+			formatString: yyyy-mm-dd
+
+		measure 'CL PY Like For Like Available' =
+				VAR FirstD = [CL Source First Date]
+				VAR LastD = [CL Source Last Date]
+				VAR Cur =
+				    FILTER ( VALUES ( 'Date'[Date] ), 'Date'[Date] >= FirstD && 'Date'[Date] <= LastD )
+				VAR CurMin = MINX ( Cur, 'Date'[Date] )
+				RETURN
+				    IF ( HASONEVALUE ( 'Date'[Year] ) && NOT ISEMPTY ( Cur ) && EDATE ( CurMin, -12 ) >= FirstD, 1 )
+			displayFolder: Commerce Lens
+
+		measure 'CL Net Sales PY' =
+				VAR FirstD = [CL Source First Date]
+				VAR LastD = [CL Source Last Date]
+				VAR Cur =
+				    FILTER ( VALUES ( 'Date'[Date] ), 'Date'[Date] >= FirstD && 'Date'[Date] <= LastD )
+				VAR PriorDates = SELECTCOLUMNS ( Cur, "PriorDate", EDATE ( 'Date'[Date], -12 ) )
+				RETURN
+				    IF (
+				        [CL PY Like For Like Available] = 1,
+				        CALCULATE ( [Net Merchandise Sales], REMOVEFILTERS ( 'Date' ), TREATAS ( PriorDates, 'Date'[Date] ) )
+				    )
+			displayFolder: Commerce Lens
+			formatString: £#,0;(£#,0);£0
+
+		measure 'CL Gross Sales PY' =
+				VAR FirstD = [CL Source First Date]
+				VAR LastD = [CL Source Last Date]
+				VAR Cur =
+				    FILTER ( VALUES ( 'Date'[Date] ), 'Date'[Date] >= FirstD && 'Date'[Date] <= LastD )
+				VAR PriorDates = SELECTCOLUMNS ( Cur, "PriorDate", EDATE ( 'Date'[Date], -12 ) )
+				RETURN
+				    IF (
+				        [CL PY Like For Like Available] = 1,
+				        CALCULATE ( [Gross Merchandise Sales], REMOVEFILTERS ( 'Date' ), TREATAS ( PriorDates, 'Date'[Date] ) )
+				    )
+			displayFolder: Commerce Lens
+			formatString: £#,0;(£#,0);£0
+
+		measure 'CL Credits PY' =
+				VAR FirstD = [CL Source First Date]
+				VAR LastD = [CL Source Last Date]
+				VAR Cur =
+				    FILTER ( VALUES ( 'Date'[Date] ), 'Date'[Date] >= FirstD && 'Date'[Date] <= LastD )
+				VAR PriorDates = SELECTCOLUMNS ( Cur, "PriorDate", EDATE ( 'Date'[Date], -12 ) )
+				RETURN
+				    IF (
+				        [CL PY Like For Like Available] = 1,
+				        CALCULATE ( [Merchandise Credits], REMOVEFILTERS ( 'Date' ), TREATAS ( PriorDates, 'Date'[Date] ) )
+				    )
+			displayFolder: Commerce Lens
+			formatString: £#,0;(£#,0);£0
+
+		measure 'CL Sales Orders PY' =
+				VAR FirstD = [CL Source First Date]
+				VAR LastD = [CL Source Last Date]
+				VAR Cur =
+				    FILTER ( VALUES ( 'Date'[Date] ), 'Date'[Date] >= FirstD && 'Date'[Date] <= LastD )
+				VAR PriorDates = SELECTCOLUMNS ( Cur, "PriorDate", EDATE ( 'Date'[Date], -12 ) )
+				RETURN
+				    IF (
+				        [CL PY Like For Like Available] = 1,
+				        CALCULATE ( [Sales Orders], REMOVEFILTERS ( 'Date' ), TREATAS ( PriorDates, 'Date'[Date] ) )
+				    )
+			displayFolder: Commerce Lens
+			formatString: #,0
+
+		measure 'CL Known Buyers PY' =
+				VAR FirstD = [CL Source First Date]
+				VAR LastD = [CL Source Last Date]
+				VAR Cur =
+				    FILTER ( VALUES ( 'Date'[Date] ), 'Date'[Date] >= FirstD && 'Date'[Date] <= LastD )
+				VAR PriorDates = SELECTCOLUMNS ( Cur, "PriorDate", EDATE ( 'Date'[Date], -12 ) )
+				RETURN
+				    IF (
+				        [CL PY Like For Like Available] = 1,
+				        CALCULATE ( [Known Buyers], REMOVEFILTERS ( 'Date' ), TREATAS ( PriorDates, 'Date'[Date] ) )
+				    )
+			displayFolder: Commerce Lens
+			formatString: #,0
+
+		measure 'CL Gross Order Value PY' =
+				DIVIDE ( [CL Gross Sales PY], [CL Sales Orders PY] )
+			displayFolder: Commerce Lens
+			formatString: £#,0;(£#,0);£0
+
+		measure 'CL Credit Value Rate PY' =
+				DIVIDE ( [CL Credits PY], [CL Gross Sales PY] )
+			displayFolder: Commerce Lens
+			formatString: 0.0%;-0.0%;0.0%
+
+		measure 'CL Net Sales YoY %' =
+				VAR c=[Net Merchandise Sales]
+				VAR p=[CL Net Sales PY]
+				RETURN IF(NOT ISBLANK(c) && NOT ISBLANK(p), DIVIDE(c-p,p))
+			displayFolder: Commerce Lens
+			formatString: 0.0%;-0.0%;0.0%
+
+		measure 'CL Sales Orders YoY %' =
+				VAR c=[Sales Orders]
+				VAR p=[CL Sales Orders PY]
+				RETURN IF(NOT ISBLANK(c) && NOT ISBLANK(p), DIVIDE(c-p,p))
+			displayFolder: Commerce Lens
+			formatString: 0.0%;-0.0%;0.0%
+
+		measure 'CL Gross Order Value YoY %' =
+				VAR c=[Gross Order Value]
+				VAR p=[CL Gross Order Value PY]
+				RETURN IF(NOT ISBLANK(c) && NOT ISBLANK(p), DIVIDE(c-p,p))
+			displayFolder: Commerce Lens
+			formatString: 0.0%;-0.0%;0.0%
+
+		measure 'CL Known Buyers YoY %' =
+				VAR c=[Known Buyers]
+				VAR p=[CL Known Buyers PY]
+				RETURN IF(NOT ISBLANK(c) && NOT ISBLANK(p), DIVIDE(c-p,p))
+			displayFolder: Commerce Lens
+			formatString: 0.0%;-0.0%;0.0%
+
+		measure 'CL Credit Value Rate Change pp' =
+				IF(NOT ISBLANK([Credit Value Rate]) && NOT ISBLANK([CL Credit Value Rate PY]),([Credit Value Rate]-[CL Credit Value Rate PY])*100)
+			displayFolder: Commerce Lens
+
+		measure 'CL PY Comparison Title' =
+				VAR Y = SELECTEDVALUE ( 'Date'[Year] )
+				RETURN
+				    IF ( [CL PY Like For Like Available] = 1, "vs same dates " & FORMAT ( Y - 1, "0" ), "No like-for-like prior period" )
+			displayFolder: Commerce Lens
+
+		measure 'CL Net Sales YoY Label' =
+				VAR v=[CL Net Sales YoY %]
+				RETURN IF(ISBLANK(v),"–",FORMAT(v,"+0.0%;-0.0%;0.0%"))
+			displayFolder: Commerce Lens
+
+		measure 'CL Sales Orders YoY Label' =
+				VAR v=[CL Sales Orders YoY %]
+				RETURN IF(ISBLANK(v),"–",FORMAT(v,"+0.0%;-0.0%;0.0%"))
+			displayFolder: Commerce Lens
+
+		measure 'CL Gross Order Value YoY Label' =
+				VAR v=[CL Gross Order Value YoY %]
+				RETURN IF(ISBLANK(v),"–",FORMAT(v,"+0.0%;-0.0%;0.0%"))
+			displayFolder: Commerce Lens
+
+		measure 'CL Known Buyers YoY Label' =
+				VAR v=[CL Known Buyers YoY %]
+				RETURN IF(ISBLANK(v),"–",FORMAT(v,"+0.0%;-0.0%;0.0%"))
+			displayFolder: Commerce Lens
+
+		measure 'CL Credit Value Rate Change Label' =
+				VAR v=[CL Credit Value Rate Change pp]
+				RETURN IF(ISBLANK(v),"–",FORMAT(v,"+0.0;-0.0;0.0") & " pp")
+			displayFolder: Commerce Lens
+
+		measure 'CL YoY Colour Net Sales' =
+				VAR d = [CL Net Sales YoY %]
+				RETURN SWITCH ( TRUE (), ISBLANK ( d ), "#93A7B0", d >= 0, "#5FD3A0", "#F08A7E" )
+			displayFolder: Commerce Lens
+
+		measure 'CL YoY Colour Orders' =
+				VAR d = [CL Sales Orders YoY %]
+				RETURN SWITCH ( TRUE (), ISBLANK ( d ), "#93A7B0", d >= 0, "#5FD3A0", "#F08A7E" )
+			displayFolder: Commerce Lens
+
+		measure 'CL YoY Colour Order Value' =
+				VAR d = [CL Gross Order Value YoY %]
+				RETURN SWITCH ( TRUE (), ISBLANK ( d ), "#93A7B0", d >= 0, "#5FD3A0", "#F08A7E" )
+			displayFolder: Commerce Lens
+
+		measure 'CL YoY Colour Buyers' =
+				VAR d = [CL Known Buyers YoY %]
+				RETURN SWITCH ( TRUE (), ISBLANK ( d ), "#93A7B0", d >= 0, "#5FD3A0", "#F08A7E" )
+			displayFolder: Commerce Lens
+
+		measure 'CL YoY Colour Credit Rate' =
+				VAR d = [CL Credit Value Rate Change pp]
+				RETURN SWITCH ( TRUE (), ISBLANK ( d ), "#93A7B0", d <= 0, "#5FD3A0", "#F08A7E" )
+			displayFolder: Commerce Lens
+
+		measure 'CL Identified Gross Share' =
+				DIVIDE ( [Known Gross Sales], [Gross Merchandise Sales] )
+			displayFolder: Commerce Lens
+			formatString: 0.0%;-0.0%;0.0%
+
+		measure 'CL Coverage Detail Label' =
+				VAR v = [Unidentified Sales Share]
+				RETURN IF(ISBLANK([Gross Merchandise Sales]), "No sales in selection", FORMAT(v,"0.0%") & " of gross sales lack a customer ID")
+			displayFolder: Commerce Lens
+
+		measure 'CL Heatmap Net Sales £K' =
+				IF ( HASONEVALUE ( 'Date'[Year] ), DIVIDE ( [Net Merchandise Sales], 1000 ) )
+			displayFolder: Commerce Lens
+			formatString: #,0.0;(#,0.0);0.0
+
+		measure 'CL Heatmap Title' =
+				"Top 10 products · monthly net sales, £ thousands"
+				    & IF ( HASONEVALUE ( 'Date'[Year] ), " · " & SELECTEDVALUE ( 'Date'[Year] ), " · select one year" )
+			displayFolder: Commerce Lens
+
+		measure 'CL Map Colour Scale' =
+				VAR v=[Net Merchandise Sales]
+				RETURN IF(v>0,LOG10(1+v))
+			displayFolder: Commerce Lens
+
+		measure 'CL Net Sales Share' =
+				DIVIDE ( [Net Merchandise Sales], CALCULATE ( [Net Merchandise Sales], ALLSELECTED ( Country ) ) )
+			displayFolder: Commerce Lens
+			formatString: 0.0%;-0.0%;0.0%
+
+		measure 'CL Unmapped Net Sales' =
+				CALCULATE ( [Net Merchandise Sales], KEEPFILTERS ( Country[CL On Map] = FALSE () ) )
+			displayFolder: Commerce Lens
+
+		measure 'CL Map Coverage Label' =
+				VAR t=[Net Merchandise Sales]
+				VAR u=COALESCE([CL Unmapped Net Sales],0)
+				RETURN IF(ISBLANK(t) || t<=0,"Map coverage unavailable for this selection", "Mapped countries: " & FORMAT(DIVIDE(t-u,t),"0.0%") & " of net sales · unmatched countries remain in totals")
+			displayFolder: Commerce Lens
+
+		measure 'CL International Net Sales' =
+				CALCULATE ( [Net Merchandise Sales], KEEPFILTERS ( Country[Market] = "International / unspecified" ) )
+			displayFolder: Commerce Lens
+			formatString: £#,0;(£#,0);£0
+
+		measure 'CL UK Share Of Net Sales' =
+				DIVIDE ( CALCULATE ( [Net Merchandise Sales], KEEPFILTERS ( Country[Market] = "United Kingdom" ) ), [Net Merchandise Sales] )
+			displayFolder: Commerce Lens
+			formatString: 0.0%;-0.0%;0.0%
+
+		measure 'CL Markets Title' =
+				IF(ISBLANK([CL International Net Sales]),"International markets · none selected","International markets · top 8")
+			displayFolder: Commerce Lens
+
+		measure 'CL Buyer Frequency Subtitle' =
+				IF(ISBLANK([Known Buyers]),"No identified buyers",FORMAT([Repeat Buyer Share],"0.0%") & " bought 2+ times in this period")
+			displayFolder: Commerce Lens
+
+		measure 'CL Selection Summary' =
+				VAR Y = SELECTEDVALUE ( 'Date'[Year] )
+				VAR M = SELECTEDVALUE ( 'Date'[CompleteMonth], "Complete and partial months" )
+				VAR Mk = SELECTEDVALUE ( Country[Market], "All markets" )
+				VAR FirstD = [CL Source First Date]
+				VAR LastD = [CL Source Last Date]
+				VAR Cur = FILTER ( VALUES ( 'Date'[Date] ), 'Date'[Date] >= FirstD && 'Date'[Date] <= LastD )
+				VAR Span =
+				    IF (
+				        NOT ISEMPTY ( Cur ),
+				        FORMAT ( MINX ( Cur, 'Date'[Date] ), "d mmm yyyy" ) & " – " & FORMAT ( MAXX ( Cur, 'Date'[Date] ), "d mmm yyyy" )
+				    )
+				RETURN
+				    IF ( ISBLANK ( Y ), "Several years", FORMAT ( Y, "0" ) ) & " · " & Span & " · " & M & " · " & Mk & " · GBP"
+			displayFolder: Commerce Lens
+
+		measure 'CL Overview Readout' =
+				VAR PeakMonth =
+				    MAXX ( TOPN ( 1, VALUES ( 'Date'[YearMonth] ), [Net Merchandise Sales], DESC ), 'Date'[YearMonth] )
+				RETURN
+				    "Net merchandise sales £" & FORMAT ( DIVIDE ( [Net Merchandise Sales], 1000000 ), "0.00" ) & "M"
+				        & IF ( NOT ISBLANK ( [CL Net Sales PY] ), " (" & [CL Net Sales YoY Label] & " vs same dates a year earlier)" )
+				        & ". Highest month: " & PeakMonth & "."
+			displayFolder: Commerce Lens
+
+		measure 'CL Net sales vs prior year' =
+				VAR y=[CL Net Sales YoY %]
+				RETURN IF(ISBLANK([Net Merchandise Sales]),"No sales in selection",IF(ISBLANK(y),"No comparable prior-year period",FORMAT(y,"+0.0%;-0.0%;0.0%") & " vs same dates a year earlier"))
+			displayFolder: Commerce Lens
+
+	ref table Country
+
+		column 'CL Map Name' = SWITCH(Country[Country], "United States", "United States of America", "Czech Republic", "Czechia", Country[Country])
+			dataType: string
+
+		column 'CL On Map' = NOT(Country[Country] IN {"Channel Islands", "European Community", "Unspecified", "West Indies", "Korea"})
+			dataType: boolean
+
+	ref table Date
+
+		column 'CL Month' = FORMAT('Date'[Date],"MMM","en-GB")
+			dataType: string
+			sortByColumn: MonthNumber

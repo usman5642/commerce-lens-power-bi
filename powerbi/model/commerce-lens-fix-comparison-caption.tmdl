@@ -1,0 +1,6 @@
+createOrReplace
+	ref table Sales
+		measure 'CL Net sales vs prior year' =
+				VAR y=[CL Net Sales YoY %]
+				RETURN IF(ISBLANK([Net Merchandise Sales]),"No sales in selection",IF(ISBLANK(y),"Full-period prior-year coverage unavailable",FORMAT(y,"+0.0%;-0.0%;0.0%") & " vs same dates a year earlier"))
+			displayFolder: Commerce Lens

@@ -1,0 +1,165 @@
+createOrReplace
+
+    ref table Sales
+
+        /// Positive merchandise invoice-line value. Excludes identified fees, adjustments, tests, vouchers and non-positive prices.
+        measure 'Gross Merchandise Sales' = SUM(Sales[GrossSales])
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Sales
+
+        /// Positive magnitude of negative-quantity merchandise lines on C-prefixed invoices. Recorded in credit date, not matched to original purchase.
+        measure 'Merchandise Credits' = SUM(Sales[CreditValue])
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Sales
+
+        /// Gross merchandise line value less recorded merchandise credits. Not audited accounting revenue or profit.
+        measure 'Net Merchandise Sales' = [Gross Merchandise Sales] - [Merchandise Credits]
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Sales
+
+        /// Monetary credit-to-gross-sales ratio. Not an item return rate or a causal quality measure.
+        measure 'Credit Value Rate' = DIVIDE([Merchandise Credits], [Gross Merchandise Sales])
+            formatString: 0.0%;(0.0%);0.0%
+            displayFolder: Sales
+
+        /// Distinct positive-sale invoice IDs in the current filter context; cancellation invoices are excluded.
+        measure 'Sales Orders' = CALCULATE(DISTINCTCOUNT(Sales[InvoiceNo]), Sales[TransactionType] = "Sale")
+            formatString: #,0
+            displayFolder: Sales
+
+        /// Gross merchandise sales divided by distinct sale invoices, before credits.
+        measure 'Gross Order Value' = DIVIDE([Gross Merchandise Sales], [Sales Orders])
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Sales
+
+        measure 'Units Sold' = SUM(Sales[SaleUnits])
+            formatString: #,0
+            displayFolder: Sales
+
+        measure 'Units Credited' = SUM(Sales[CreditUnits])
+            formatString: #,0
+            displayFolder: Sales
+
+        measure 'Sales Lines' = COUNTROWS(Sales)
+            formatString: #,0
+            displayFolder: Sales
+
+        /// Same calendar dates one year earlier. Blank when more than one year is selected.
+        measure 'Net Sales Previous Year' =
+                VAR PriorDates = SELECTCOLUMNS(VALUES('Date'[Date]), "PriorDate", EDATE('Date'[Date], -12))
+                RETURN IF(HASONEVALUE('Date'[Year]), CALCULATE([Net Merchandise Sales], REMOVEFILTERS('Date'), TREATAS(PriorDates, 'Date'[Date])))
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Comparison
+
+        measure 'Net Sales YoY' = DIVIDE([Net Merchandise Sales] - [Net Sales Previous Year], [Net Sales Previous Year])
+            formatString: 0.0%;(0.0%);0.0%
+            displayFolder: Comparison
+
+        /// Identified customers with at least one sale invoice in the selected period. Unknown IDs are excluded, not counted as one customer.
+        measure 'Known Buyers' = CALCULATE(DISTINCTCOUNT(Sales[CustomerKey]), Sales[TransactionType] = "Sale", KEEPFILTERS(Sales[CustomerKey] <> "Unknown"))
+            formatString: #,0
+            displayFolder: Customers
+
+        /// Identified buyers with two or more distinct sale invoices in the selected period. This is observed repeat purchasing, not a churn or retention estimate.
+        measure 'Repeat Buyers' = COUNTROWS(FILTER(FILTER(VALUES(Customer[CustomerKey]), Customer[CustomerKey] <> "Unknown"), CALCULATE([Sales Orders]) >= 2))
+            formatString: #,0
+            displayFolder: Customers
+
+        measure 'Repeat Buyer Share' = DIVIDE([Repeat Buyers], [Known Buyers])
+            formatString: 0.0%;(0.0%);0.0%
+            displayFolder: Customers
+
+        measure 'Unidentified Gross Sales' = CALCULATE([Gross Merchandise Sales], KEEPFILTERS(Sales[CustomerKey] = "Unknown"))
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Customers
+
+        measure 'Unidentified Sales Share' = DIVIDE([Unidentified Gross Sales], [Gross Merchandise Sales])
+            formatString: 0.0%;(0.0%);0.0%
+            displayFolder: Customers
+
+        measure 'Known Gross Sales' = CALCULATE([Gross Merchandise Sales], KEEPFILTERS(Sales[CustomerKey] <> "Unknown"))
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Customers
+
+        /// Share of identified gross merchandise sales attributable to the ten largest identified buyers in the current selection.
+        measure 'Top 10 Buyer Share' =
+                VAR Buyers = ADDCOLUMNS(FILTER(ALLSELECTED(Customer[CustomerKey]), Customer[CustomerKey] <> "Unknown"), "BuyerValue", CALCULATE([Gross Merchandise Sales]))
+                VAR TopBuyers = TOPN(10, Buyers, [BuyerValue], DESC, Customer[CustomerKey], ASC)
+                RETURN DIVIDE(SUMX(TopBuyers, [BuyerValue]), [Known Gross Sales])
+            formatString: 0.0%;(0.0%);0.0%
+            displayFolder: Customers
+
+        measure 'Buyer Band Count' =
+                VAR LowerBound = SELECTEDVALUE(PurchaseBand[MinOrders])
+                VAR UpperBound = SELECTEDVALUE(PurchaseBand[MaxOrders])
+                RETURN COUNTROWS(FILTER(FILTER(VALUES(Customer[CustomerKey]), Customer[CustomerKey] <> "Unknown"), VAR N = CALCULATE([Sales Orders]) RETURN N >= LowerBound && N <= UpperBound))
+            formatString: #,0
+            displayFolder: Customers
+
+        measure 'Product Rank' = RANKX(ALLSELECTED(Product[ProductLabel]), [Net Merchandise Sales], , DESC, DENSE)
+            formatString: #,0
+            displayFolder: Ranking
+
+        measure 'Top 10 Product Sales' = IF([Product Rank] <= 10, [Net Merchandise Sales])
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Ranking
+
+        measure 'Country Rank' = RANKX(ALLSELECTED(Country[Country]), [Net Merchandise Sales], , DESC, DENSE)
+            formatString: #,0
+            displayFolder: Ranking
+
+        measure 'Top 8 Market Sales' = IF([Country Rank] <= 8, [Net Merchandise Sales])
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Ranking
+
+        /// All original source rows. Quality tables are intentionally disconnected from commercial slicers.
+        measure 'Raw Source Rows' = SUM(RowAudit[Rows])
+            formatString: #,0
+            displayFolder: Data quality
+
+        measure 'Included Rows' = CALCULATE(SUM(RowAudit[Rows]), RowAudit[Disposition] IN {"Included sale", "Included credit"})
+            formatString: #,0
+            displayFolder: Data quality
+
+        measure 'Duplicate Rows' = CALCULATE(SUM(RowAudit[Rows]), RowAudit[Disposition] IN {"Duplicate within sheet", "Duplicate across sheets"})
+            formatString: #,0
+            displayFolder: Data quality
+
+        measure 'Excluded Rows' = [Raw Source Rows] - [Included Rows]
+            formatString: #,0
+            displayFolder: Data quality
+
+        measure 'Raw Missing Customer Rows' = SUM(QualityMonthly[MissingCustomerRows])
+            formatString: #,0
+            displayFolder: Data quality
+
+        measure 'Raw Missing ID Share' = DIVIDE([Raw Missing Customer Rows], SUM(QualityMonthly[RawRows]))
+            formatString: 0.0%;(0.0%);0.0%
+            displayFolder: Data quality
+
+        measure 'Audit Rows' = SUM(RowAudit[Rows])
+            formatString: #,0
+            displayFolder: Data quality
+
+        measure 'Audit Signed Value' = SUM(RowAudit[SignedLineValue])
+            formatString: £#,0;(£#,0);£0
+            displayFolder: Data quality
+
+        measure 'Monthly Raw Rows' = SUM(QualityMonthly[RawRows])
+            formatString: #,0
+            displayFolder: Data quality
+
+        measure 'Monthly Missing ID Share' = DIVIDE(SUM(QualityMonthly[MissingCustomerRows]), SUM(QualityMonthly[RawRows]))
+            formatString: 0.0%;(0.0%);0.0%
+            displayFolder: Data quality
+
+        measure 'Selection Summary' =
+                VAR Y = SELECTEDVALUE('Date'[Year])
+                RETURN IF(NOT ISBLANK(Y), FORMAT(Y,"0"), "Multiple years") & " | Complete months | GBP"
+            displayFolder: Labels
+
+        measure 'Commercial Readout' = "Gross merchandise sales " & FORMAT([Gross Merchandise Sales],"£#,0") & " less credits " & FORMAT([Merchandise Credits],"£#,0") & ". Credits are recorded when issued."
+            displayFolder: Labels
+
+        measure 'Customer Readout' = FORMAT([Unidentified Sales Share],"0.0%") & " of gross sales cannot be assigned to a customer ID. Repeat-buyer measures cover identified customers only."
+            displayFolder: Labels

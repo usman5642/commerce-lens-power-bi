@@ -1,0 +1,7 @@
+createOrReplace
+	ref table Sales
+		measure 'CL Map Coverage Label' =
+				VAR t=[Net Merchandise Sales]
+				VAR u=COALESCE([CL Unmapped Net Sales],0)
+				RETURN IF(ISBLANK(t) || t<=0,"Map coverage unavailable for this selection","Map coverage: " & FORMAT(DIVIDE(t-u,t),"0.0%") & " · unmatched sales stay in totals")
+			displayFolder: Commerce Lens

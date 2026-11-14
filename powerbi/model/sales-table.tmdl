@@ -1,0 +1,345 @@
+createOrReplace
+
+	table Sales
+		lineageTag: cc3990c1-3700-40e7-84e4-a1e612ab1b66
+
+		/// Positive merchandise invoice-line value. Excludes identified fees, adjustments, tests, vouchers and non-positive prices.
+		measure 'Gross Merchandise Sales' = SUM(Sales[GrossSales])
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Sales
+			lineageTag: a5eac85e-c583-4cee-ae1f-840d300f0c79
+
+		/// Positive magnitude of negative-quantity merchandise lines on C-prefixed invoices. Recorded in credit date, not matched to original purchase.
+		measure 'Merchandise Credits' = SUM(Sales[CreditValue])
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Sales
+			lineageTag: 3e036097-4c29-4b17-9eac-fd9b418ce827
+
+		/// Gross merchandise line value less recorded merchandise credits. Not audited accounting revenue or profit.
+		measure 'Net Merchandise Sales' = [Gross Merchandise Sales] - [Merchandise Credits]
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Sales
+			lineageTag: 8992f7eb-9379-4eed-a8bb-6d1683779701
+
+		/// Monetary credit-to-gross-sales ratio. Not an item return rate or a causal quality measure.
+		measure 'Credit Value Rate' = DIVIDE([Merchandise Credits], [Gross Merchandise Sales])
+			formatString: 0.0%;(0.0%);0.0%
+			displayFolder: Sales
+			lineageTag: 913bd4e4-61c1-411f-8016-348b4f5fa61f
+
+		/// Distinct positive-sale invoice IDs in the current filter context; cancellation invoices are excluded.
+		measure 'Sales Orders' = CALCULATE(DISTINCTCOUNT(Sales[InvoiceNo]), Sales[TransactionType] = "Sale")
+			formatString: #,0
+			displayFolder: Sales
+			lineageTag: 49073d24-6d4d-44a2-8af5-b9e6b78eafa2
+
+		/// Gross merchandise sales divided by distinct sale invoices, before credits.
+		measure 'Gross Order Value' = DIVIDE([Gross Merchandise Sales], [Sales Orders])
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Sales
+			lineageTag: e4da4ffc-b1cf-49e1-8794-f9e7fb81d0d3
+
+		measure 'Units Sold' = SUM(Sales[SaleUnits])
+			formatString: #,0
+			displayFolder: Sales
+			lineageTag: 2bd5de37-fdd8-4ac5-888a-0aedd0453ef1
+
+		measure 'Units Credited' = SUM(Sales[CreditUnits])
+			formatString: #,0
+			displayFolder: Sales
+			lineageTag: 2d8f2930-856f-4a62-ad76-5129afe2c9d0
+
+		measure 'Sales Lines' = COUNTROWS(Sales)
+			formatString: #,0
+			displayFolder: Sales
+			lineageTag: 417d2569-24f0-4a5f-8569-39a6a26757dd
+
+		/// Same calendar dates one year earlier. Blank when more than one year is selected.
+		measure 'Net Sales Previous Year' =
+				VAR PriorDates = SELECTCOLUMNS(VALUES('Date'[Date]), "PriorDate", EDATE('Date'[Date], -12))
+				RETURN IF(HASONEVALUE('Date'[Year]), CALCULATE([Net Merchandise Sales], REMOVEFILTERS('Date'), TREATAS(PriorDates, 'Date'[Date])))
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Comparison
+			lineageTag: 08bea187-f104-4d6f-ab81-1883b06b86f8
+
+		measure 'Net Sales YoY' = DIVIDE([Net Merchandise Sales] - [Net Sales Previous Year], [Net Sales Previous Year])
+			formatString: 0.0%;(0.0%);0.0%
+			displayFolder: Comparison
+			lineageTag: 06c50135-1aaa-43df-be21-b4bc08bf756f
+
+		/// Identified customers with at least one sale invoice in the selected period. Unknown IDs are excluded, not counted as one customer.
+		measure 'Known Buyers' = CALCULATE(DISTINCTCOUNT(Sales[CustomerKey]), Sales[TransactionType] = "Sale", KEEPFILTERS(Sales[CustomerKey] <> "Unknown"))
+			formatString: #,0
+			displayFolder: Customers
+			lineageTag: ceb1ef70-6b70-4701-829c-098a96fd6d5f
+
+		/// Identified buyers with two or more distinct sale invoices in the selected period. This is observed repeat purchasing, not a churn or retention estimate.
+		measure 'Repeat Buyers' = COUNTROWS(FILTER(FILTER(VALUES(Customer[CustomerKey]), Customer[CustomerKey] <> "Unknown"), CALCULATE([Sales Orders]) >= 2))
+			formatString: #,0
+			displayFolder: Customers
+			lineageTag: eaa752c5-498c-448c-8c2f-0493ac0cf9dc
+
+		measure 'Repeat Buyer Share' = DIVIDE([Repeat Buyers], [Known Buyers])
+			formatString: 0.0%;(0.0%);0.0%
+			displayFolder: Customers
+			lineageTag: e1d297f1-0d3e-482e-899a-34e45a45f3b6
+
+		measure 'Unidentified Gross Sales' = CALCULATE([Gross Merchandise Sales], KEEPFILTERS(Sales[CustomerKey] = "Unknown"))
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Customers
+			lineageTag: 9c1d5a07-b22d-4ad3-8c61-c701bdf51092
+
+		measure 'Unidentified Sales Share' = DIVIDE([Unidentified Gross Sales], [Gross Merchandise Sales])
+			formatString: 0.0%;(0.0%);0.0%
+			displayFolder: Customers
+			lineageTag: e72a5a49-0877-405b-99ba-edd7ae4b384b
+
+		measure 'Known Gross Sales' = CALCULATE([Gross Merchandise Sales], KEEPFILTERS(Sales[CustomerKey] <> "Unknown"))
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Customers
+			lineageTag: a587a00b-f75d-4d7b-9cc8-87ce9bdfc9de
+
+		/// Share of identified gross merchandise sales attributable to the ten largest identified buyers in the current selection.
+		measure 'Top 10 Buyer Share' =
+				VAR Buyers = ADDCOLUMNS(FILTER(ALLSELECTED(Customer[CustomerKey]), Customer[CustomerKey] <> "Unknown"), "BuyerValue", CALCULATE([Gross Merchandise Sales]))
+				VAR TopBuyers = TOPN(10, Buyers, [BuyerValue], DESC, Customer[CustomerKey], ASC)
+				RETURN DIVIDE(SUMX(TopBuyers, [BuyerValue]), [Known Gross Sales])
+			formatString: 0.0%;(0.0%);0.0%
+			displayFolder: Customers
+			lineageTag: 8aefa922-00b0-4d79-9e37-265cf6ecac0c
+
+		measure 'Buyer Band Count' =
+				VAR LowerBound = SELECTEDVALUE(PurchaseBand[MinOrders])
+				VAR UpperBound = SELECTEDVALUE(PurchaseBand[MaxOrders])
+				RETURN COUNTROWS(FILTER(FILTER(VALUES(Customer[CustomerKey]), Customer[CustomerKey] <> "Unknown"), VAR N = CALCULATE([Sales Orders]) RETURN N >= LowerBound && N <= UpperBound))
+			formatString: #,0
+			displayFolder: Customers
+			lineageTag: f96dc8be-b5ce-4a84-ab29-b492e6556e04
+
+		measure 'Product Rank' = RANKX(ALLSELECTED(Product[ProductLabel]), [Net Merchandise Sales], , DESC, DENSE)
+			formatString: #,0
+			displayFolder: Ranking
+			lineageTag: 207ef169-388b-438d-a433-ab917a88a634
+
+		measure 'Top 10 Product Sales' = IF([Product Rank] <= 10, [Net Merchandise Sales])
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Ranking
+			lineageTag: 7000d839-f551-4aa9-8090-b47c684d6841
+
+		measure 'Country Rank' = RANKX(ALLSELECTED(Country[Country]), [Net Merchandise Sales], , DESC, DENSE)
+			formatString: #,0
+			displayFolder: Ranking
+			lineageTag: 41faac91-b37e-48e4-8b34-f26b1b57e4fa
+
+		measure 'Top 8 Market Sales' = IF([Country Rank] <= 8, [Net Merchandise Sales])
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Ranking
+			lineageTag: 2fb45c34-540c-4f5b-b425-8401d2a99da8
+
+		/// All original source rows. Quality tables are intentionally disconnected from commercial slicers.
+		measure 'Raw Source Rows' = SUM(RowAudit[Rows])
+			formatString: #,0
+			displayFolder: Data quality
+			lineageTag: b0feaab5-762b-47db-85ce-75fc645ebaf6
+
+		measure 'Included Rows' = CALCULATE(SUM(RowAudit[Rows]), RowAudit[Disposition] IN {"Included sale", "Included credit"})
+			formatString: #,0
+			displayFolder: Data quality
+			lineageTag: 43ff32cf-00cf-4a6a-b71f-4183f2a6eb15
+
+		measure 'Duplicate Rows' = CALCULATE(SUM(RowAudit[Rows]), RowAudit[Disposition] IN {"Duplicate within sheet", "Duplicate across sheets"})
+			formatString: #,0
+			displayFolder: Data quality
+			lineageTag: 41c3a394-f7ed-4c4f-9d29-998065f67262
+
+		measure 'Excluded Rows' = [Raw Source Rows] - [Included Rows]
+			formatString: #,0
+			displayFolder: Data quality
+			lineageTag: c555fe31-8072-4acc-b47d-8227e19c9460
+
+		measure 'Raw Missing Customer Rows' = SUM(QualityMonthly[MissingCustomerRows])
+			formatString: #,0
+			displayFolder: Data quality
+			lineageTag: d2175614-4bbd-46d7-97e6-75e534038001
+
+		measure 'Raw Missing ID Share' = DIVIDE([Raw Missing Customer Rows], SUM(QualityMonthly[RawRows]))
+			formatString: 0.0%;(0.0%);0.0%
+			displayFolder: Data quality
+			lineageTag: 9632ffdc-e971-42d7-b78c-5a2a4ab0912f
+
+		measure 'Audit Rows' = SUM(RowAudit[Rows])
+			formatString: #,0
+			displayFolder: Data quality
+			lineageTag: 3b03a641-2181-47e9-babd-85505144be98
+
+		measure 'Audit Signed Value' = SUM(RowAudit[SignedLineValue])
+			formatString: £#,0;(£#,0);£0
+			displayFolder: Data quality
+			lineageTag: ab3a1c51-33eb-4a5b-9399-c5d83066c137
+
+		measure 'Monthly Raw Rows' = SUM(QualityMonthly[RawRows])
+			formatString: #,0
+			displayFolder: Data quality
+			lineageTag: 49b04d4f-e5d9-4d48-bf95-ea892741ca3d
+
+		measure 'Monthly Missing ID Share' = DIVIDE(SUM(QualityMonthly[MissingCustomerRows]), SUM(QualityMonthly[RawRows]))
+			formatString: 0.0%;(0.0%);0.0%
+			displayFolder: Data quality
+			lineageTag: bee5cd22-9b01-4186-8f80-53ea3daf5d72
+
+		measure 'Selection Summary' =
+				VAR Y = SELECTEDVALUE('Date'[Year])
+				RETURN IF(NOT ISBLANK(Y), FORMAT(Y,"0"), "Multiple years") & " | Complete months | GBP"
+			displayFolder: Labels
+			lineageTag: d5ea9e8e-3b07-4c6f-bc11-ea86f4b6f135
+
+		measure 'Commercial Readout' = "Gross merchandise sales " & FORMAT([Gross Merchandise Sales],"£#,0") & " less credits " & FORMAT([Merchandise Credits],"£#,0") & ". Credits are recorded when issued."
+			displayFolder: Labels
+			lineageTag: 7d261ae4-4466-48eb-9288-f9cfa3d05e5f
+
+		measure 'Customer Readout' = FORMAT([Unidentified Sales Share],"0.0%") & " of gross sales cannot be assigned to a customer ID. Repeat-buyer measures cover identified customers only."
+			displayFolder: Labels
+			lineageTag: 708b2fed-d9b7-4e68-ae73-dcac2d7f6224
+
+		column RowID
+			dataType: int64
+			formatString: 0
+			lineageTag: af8d0c3a-9e0a-4789-b920-f39799ee9b3d
+			summarizeBy: count
+			sourceColumn: RowID
+
+			annotation SummarizationSetBy = Automatic
+
+		column InvoiceNo
+			dataType: string
+			lineageTag: 80713e61-f817-4c6a-b4ee-f790b919f2d4
+			summarizeBy: none
+			sourceColumn: InvoiceNo
+
+			annotation SummarizationSetBy = Automatic
+
+		column Date
+			dataType: dateTime
+			formatString: Long Date
+			lineageTag: ca1ef62d-1224-455c-844a-f45b6d89a2fa
+			summarizeBy: none
+			sourceColumn: Date
+
+			variation Variation
+				isDefault
+				relationship: 43ec6bb9-f84d-4c7c-bcf1-48bdcc76c9c7
+				defaultHierarchy: LocalDateTable_753ab679-4ae7-441c-92b0-2064b373484e.'Date Hierarchy'
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+		column StockCode
+			dataType: string
+			lineageTag: cd02c50b-5e9a-4538-9200-3e748b3b5b5b
+			summarizeBy: none
+			sourceColumn: StockCode
+
+			annotation SummarizationSetBy = Automatic
+
+		column CustomerKey
+			dataType: string
+			lineageTag: 7aad860e-24bb-418e-af04-90acf18fbc30
+			summarizeBy: none
+			sourceColumn: CustomerKey
+
+			annotation SummarizationSetBy = Automatic
+
+		column Country
+			dataType: string
+			lineageTag: 9c521b4f-dce3-40e1-8da3-b84249b602a3
+			summarizeBy: none
+			sourceColumn: Country
+
+			annotation SummarizationSetBy = Automatic
+
+		column TransactionType
+			dataType: string
+			lineageTag: 2c77fcae-e741-473b-9578-d51ee14540ab
+			summarizeBy: none
+			sourceColumn: TransactionType
+
+			annotation SummarizationSetBy = Automatic
+
+		column Quantity
+			dataType: int64
+			formatString: 0
+			lineageTag: d6d6ad7f-6e25-4991-9e8b-795cc48ebfc2
+			summarizeBy: sum
+			sourceColumn: Quantity
+
+			annotation SummarizationSetBy = Automatic
+
+		column UnitPrice
+			dataType: decimal
+			formatString: "£"#,0.###############;-"£"#,0.###############;"£"#,0.###############
+			lineageTag: e28bd788-c75c-4c30-9a12-b7de89368367
+			summarizeBy: sum
+			sourceColumn: UnitPrice
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+		column LineValue
+			dataType: decimal
+			formatString: "£"#,0.###############;-"£"#,0.###############;"£"#,0.###############
+			lineageTag: f9f72c52-3acd-4988-bdc0-61c8c3bda0ec
+			summarizeBy: sum
+			sourceColumn: LineValue
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+		column GrossSales
+			dataType: decimal
+			formatString: "£"#,0.###############;-"£"#,0.###############;"£"#,0.###############
+			lineageTag: de218309-1f7c-46ce-b17b-0874eb023961
+			summarizeBy: sum
+			sourceColumn: GrossSales
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+		column CreditValue
+			dataType: decimal
+			formatString: "£"#,0.###############;-"£"#,0.###############;"£"#,0.###############
+			lineageTag: 8e7c42b5-b2ea-4710-8d6f-f58393aba466
+			summarizeBy: sum
+			sourceColumn: CreditValue
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+		column SaleUnits
+			dataType: int64
+			formatString: 0
+			lineageTag: 52c30af8-cfda-41e0-a9ab-76c4738c475d
+			summarizeBy: sum
+			sourceColumn: SaleUnits
+
+			annotation SummarizationSetBy = Automatic
+
+		column CreditUnits
+			dataType: int64
+			formatString: 0
+			lineageTag: 91e2daf8-3736-4b7a-97d0-b8b089e37463
+			summarizeBy: sum
+			sourceColumn: CreditUnits
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Sales = m
+			mode: import
+			source = RetailSource[Sales]
+
+		annotation PBI_ResultType = Table
+

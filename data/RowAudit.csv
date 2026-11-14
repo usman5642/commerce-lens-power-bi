@@ -1,0 +1,127 @@
+Month,Disposition,Rows,SignedLineValue,DispositionOrder
+2009-12-01,Duplicate within sheet,506,3198.6100,1
+2009-12-01,Included credit,982,-19558.0800,8
+2009-12-01,Included sale,43320,797901.1600,7
+2009-12-01,Non-merchandise or test line,164,18305.4200,4
+2009-12-01,Zero or negative unit price,256,0.0000,3
+2010-01-01,Duplicate within sheet,321,1553.3900,1
+2010-01-01,Included credit,620,-7465.6300,8
+2010-01-01,Included sale,30178,612297.4220,7
+2010-01-01,Non-merchandise or test line,205,17647.7100,4
+2010-01-01,Zero or negative unit price,231,0.0000,3
+2010-02-01,Duplicate within sheet,330,1826.0600,1
+2010-02-01,Included credit,551,-12575.4400,8
+2010-02-01,Included sale,27817,537909.6760,7
+2010-02-01,Non-merchandise or test line,159,5931.1300,4
+2010-02-01,Zero or negative unit price,531,0.0000,3
+2010-03-01,Duplicate within sheet,526,2601.5200,1
+2010-03-01,Included credit,768,-9603.8500,8
+2010-03-01,Included sale,39610,761705.9810,7
+2010-03-01,Non-merchandise or test line,304,11145.1100,4
+2010-03-01,Zero or negative unit price,303,0.0000,3
+2010-04-01,Duplicate within sheet,410,2653.7400,1
+2010-04-01,Included credit,571,-10025.2600,8
+2010-04-01,Included sale,32667,646340.9320,7
+2010-04-01,Non-merchandise or test line,246,5205.3800,4
+2010-04-01,Zero or negative unit price,163,-53594.3600,3
+2010-05-01,Duplicate within sheet,415,2052.1100,1
+2010-05-01,Included credit,953,-37192.8900,8
+2010-05-01,Included sale,33226,643492.0300,7
+2010-05-01,Non-merchandise or test line,185,6971.5800,4
+2010-05-01,Zero or negative unit price,544,0.0000,3
+2010-06-01,Duplicate within sheet,514,2712.7400,1
+2010-06-01,Included credit,727,-26373.4600,8
+2010-06-01,Included sale,38211,696583.1900,7
+2010-06-01,Non-merchandise or test line,243,6864.1400,4
+2010-06-01,Zero or negative unit price,288,0.0000,3
+2010-07-01,Duplicate within sheet,391,1902.6700,1
+2010-07-01,Included credit,694,-17132.7300,8
+2010-07-01,Included sale,31943,632994.3200,7
+2010-07-01,Non-merchandise or test line,209,1503.8900,4
+2010-07-01,Zero or negative unit price,146,-44031.7900,3
+2010-08-01,Duplicate within sheet,367,2001.9500,1
+2010-08-01,Included credit,536,-12397.6000,8
+2010-08-01,Included sale,31953,674037.7200,7
+2010-08-01,Non-merchandise or test line,191,-6865.7300,4
+2010-08-01,Zero or negative unit price,259,0.0000,3
+2010-09-01,Duplicate within sheet,484,2544.4700,1
+2010-09-01,Included credit,749,-27686.4200,8
+2010-09-01,Included sale,40415,869243.1210,7
+2010-09-01,Non-merchandise or test line,273,9549.2600,4
+2010-09-01,Zero or negative unit price,170,0.0000,3
+2010-10-01,Duplicate within sheet,849,3482.7400,1
+2010-10-01,Included credit,951,-25451.0700,8
+2010-10-01,Included sale,56706,1094435.9800,7
+2010-10-01,Non-merchandise or test line,333,11626.5700,4
+2010-10-01,Zero or negative unit price,259,-38925.8700,3
+2010-11-01,Duplicate within sheet,1431,5957.4400,1
+2010-11-01,Included credit,1145,-35098.9800,8
+2010-11-01,Included sale,74771,1429700.7820,7
+2010-11-01,Non-merchandise or test line,311,22095.4000,4
+2010-11-01,Zero or negative unit price,357,0.0000,3
+2010-12-01,Duplicate across sheets,22202,376266.8200,2
+2010-12-01,Duplicate within sheet,821,3455.0400,1
+2010-12-01,Included credit,689,-17547.8600,8
+2010-12-01,Included sale,40826,775638.3600,7
+2010-12-01,Non-merchandise or test line,195,-11366.8900,4
+2010-12-01,Zero or negative unit price,271,0.0000,3
+2011-01-01,Duplicate within sheet,247,1551.7000,1
+2011-01-01,Included credit,678,-91525.0500,8
+2011-01-01,Included sale,33902,670380.2400,7
+2011-01-01,Non-merchandise or test line,180,-20406.6300,4
+2011-01-01,Zero or negative unit price,140,0.0000,3
+2011-02-01,Duplicate within sheet,228,1036.2400,1
+2011-02-01,Included credit,414,-8335.5200,8
+2011-02-01,Included sale,26741,507799.8700,7
+2011-02-01,Non-merchandise or test line,197,-2437.9400,4
+2011-02-01,Zero or negative unit price,127,0.0000,3
+2011-03-01,Duplicate within sheet,309,1253.1000,1
+2011-03-01,Included credit,639,-10504.3000,8
+2011-03-01,Included sale,35301,689833.5100,7
+2011-03-01,Non-merchandise or test line,253,2684.7700,4
+2011-03-01,Zero or negative unit price,246,0.0000,3
+2011-04-01,Duplicate within sheet,215,839.2800,1
+2011-04-01,Included credit,530,-33316.0600,8
+2011-04-01,Included sale,28743,515377.9910,7
+2011-04-01,Non-merchandise or test line,167,10305.9100,4
+2011-04-01,Zero or negative unit price,261,0.0000,3
+2011-05-01,Duplicate within sheet,248,1239.4100,1
+2011-05-01,Included credit,558,-8948.2300,8
+2011-05-01,Included sale,35732,739953.0000,7
+2011-05-01,Non-merchandise or test line,248,-8910.6700,4
+2011-05-01,Zero or negative unit price,244,0.0000,3
+2011-06-01,Duplicate within sheet,265,1145.8900,1
+2011-06-01,Included credit,667,-13713.8400,8
+2011-06-01,Included sale,35512,737558.9800,7
+2011-06-01,Non-merchandise or test line,246,-33867.9100,4
+2011-06-01,Zero or negative unit price,184,0.0000,3
+2011-07-01,Duplicate within sheet,251,1143.1200,1
+2011-07-01,Included credit,641,-11407.2600,8
+2011-07-01,Included sale,38194,688219.3410,7
+2011-07-01,Non-merchandise or test line,244,3344.9100,4
+2011-07-01,Zero or negative unit price,188,0.0000,3
+2011-08-01,Duplicate within sheet,220,1294.0500,1
+2011-08-01,Included credit,616,-22926.5700,8
+2011-08-01,Included sale,34107,724216.5000,7
+2011-08-01,Non-merchandise or test line,208,2220.6500,4
+2011-08-01,Zero or negative unit price,133,-22124.1200,3
+2011-09-01,Duplicate within sheet,365,2090.9400,1
+2011-09-01,Included credit,756,-16980.6400,8
+2011-09-01,Included sale,48696,1028320.3810,7
+2011-09-01,Non-merchandise or test line,249,6256.9410,4
+2011-09-01,Zero or negative unit price,160,0.0000,3
+2011-10-01,Duplicate within sheet,773,1336.4400,1
+2011-10-01,Included credit,1120,-41613.0300,8
+2011-10-01,Included sale,58306,1103314.2500,7
+2011-10-01,Non-merchandise or test line,305,7667.0100,4
+2011-10-01,Zero or negative unit price,238,0.0000,3
+2011-11-01,Duplicate within sheet,1368,5610.4500,1
+2011-11-01,Included credit,1013,-24991.4400,8
+2011-11-01,Included sale,81727,1452115.9800,7
+2011-11-01,Non-merchandise or test line,337,29021.2600,4
+2011-11-01,Zero or negative unit price,266,0.0000,3
+2011-12-01,Duplicate within sheet,279,966.9500,1
+2011-12-01,Included credit,347,-174091.3600,8
+2011-12-01,Included sale,24753,614490.9200,7
+2011-12-01,Non-merchandise or test line,93,-7680.5000,4
+2011-12-01,Zero or negative unit price,54,0.0000,3

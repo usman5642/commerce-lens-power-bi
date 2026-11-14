@@ -1,0 +1,2 @@
+SQLite run of "Independent metric checks.sql" against Sales.csv
+{'net_sales': 8572828.103, 'gross_sales': 8857090.043, 'credits': 284261.94, 'sales_orders': 17407, 'known_buyers': 4168}

@@ -1,0 +1,3 @@
+A disposable copy changed the expected default net sales to zero.
+Result: 31/32 checks passed; exactly one expected failure; process exit status 1.
+The published validation script and the dataset were not modified by this probe.

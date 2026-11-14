@@ -1,0 +1,661 @@
+{
+  "sales_rows": 1021272,
+  "source_rows_in_audit": 1067371,
+  "audit_by_disposition": {
+    "Included sale": 1003357,
+    "Duplicate across sheets": 22202,
+    "Included credit": 17915,
+    "Duplicate within sheet": 12133,
+    "Zero or negative unit price": 6019,
+    "Non-merchandise or test line": 5745
+  },
+  "source_first_date": "2009-12-01",
+  "source_last_date": "2011-12-09",
+  "countries": 43,
+  "products": 4739,
+  "identified_customers": 5875,
+  "purchase_bands": [
+    {
+      "Band": "One order",
+      "MinOrders": 1,
+      "MaxOrders": 1,
+      "BandOrder": 1
+    },
+    {
+      "Band": "2\u20133 orders",
+      "MinOrders": 2,
+      "MaxOrders": 3,
+      "BandOrder": 2
+    },
+    {
+      "Band": "4\u20139 orders",
+      "MinOrders": 4,
+      "MaxOrders": 9,
+      "BandOrder": 3
+    },
+    {
+      "Band": "10+ orders",
+      "MinOrders": 10,
+      "MaxOrders": 999999,
+      "BandOrder": 4
+    }
+  ],
+  "default_2011_complete_all": {
+    "current_window": [
+      "2011-01-01",
+      "2011-11-30"
+    ],
+    "filters": {},
+    "net": 8572828.103,
+    "gross": 8857090.043,
+    "credits": 284261.94,
+    "orders": 17407,
+    "buyers": 4168,
+    "gross_order_value": 508.82,
+    "credit_rate_pct": 3.209,
+    "id_coverage_pct": 86.48,
+    "unidentified_pct": 13.52,
+    "repeat_share_pct": 62.6,
+    "bands": {
+      "One order": 1559,
+      "2\u20133 orders": 1273,
+      "4\u20139 orders": 1026,
+      "10+ orders": 310
+    },
+    "map_coverage_pct": 99.7,
+    "unmapped_net": 25310.4,
+    "prior_window": [
+      "2010-01-01",
+      "2010-11-30"
+    ],
+    "prior_net": 8377737.824,
+    "net_yoy_pct": 2.3287,
+    "orders_yoy_pct": -3.71,
+    "buyers_yoy_pct": 0.99,
+    "gov_yoy_pct": 6.97,
+    "credit_rate_change_pp": 0.64
+  },
+  "partial_2011_1to9_dec": {
+    "current_window": [
+      "2011-12-01",
+      "2011-12-09"
+    ],
+    "filters": {},
+    "net": 440399.56,
+    "gross": 614490.92,
+    "credits": 174091.36,
+    "orders": 816,
+    "buyers": 614,
+    "gross_order_value": 753.05,
+    "credit_rate_pct": 28.331,
+    "id_coverage_pct": 83.36,
+    "unidentified_pct": 16.64,
+    "repeat_share_pct": 17.1,
+    "bands": {
+      "One order": 509,
+      "2\u20133 orders": 97,
+      "4\u20139 orders": 8,
+      "10+ orders": 0
+    },
+    "map_coverage_pct": 99.96,
+    "unmapped_net": 194.15,
+    "prior_window": [
+      "2010-12-01",
+      "2010-12-09"
+    ],
+    "prior_net": 401141.88,
+    "net_yoy_pct": 9.7865,
+    "orders_yoy_pct": -1.69,
+    "buyers_yoy_pct": 7.34,
+    "gov_yoy_pct": 53.19,
+    "credit_rate_change_pp": 26.65
+  },
+  "full_2010_complete": {
+    "current_window": [
+      "2010-01-01",
+      "2010-12-31"
+    ],
+    "filters": {},
+    "net": 9135828.324,
+    "gross": 9374379.514,
+    "credits": 238551.19,
+    "orders": 19627,
+    "buyers": 4205,
+    "gross_order_value": 477.63,
+    "credit_rate_pct": 2.545,
+    "id_coverage_pct": 87.67,
+    "unidentified_pct": 12.33,
+    "repeat_share_pct": 66.42,
+    "bands": {
+      "One order": 1412,
+      "2\u20133 orders": 1308,
+      "4\u20139 orders": 1116,
+      "10+ orders": 369
+    },
+    "map_coverage_pct": 99.68,
+    "unmapped_net": 28934.02,
+    "prior_net": null
+  },
+  "uk_2011_complete": {
+    "current_window": [
+      "2011-01-01",
+      "2011-11-30"
+    ],
+    "filters": {
+      "market": "UK"
+    },
+    "net": 7192114.073,
+    "gross": 7447930.493,
+    "credits": 255816.42,
+    "orders": 15717,
+    "buyers": 3769,
+    "gross_order_value": 473.88,
+    "credit_rate_pct": 3.435,
+    "id_coverage_pct": 84.28,
+    "unidentified_pct": 15.72,
+    "repeat_share_pct": 62.59,
+    "bands": {
+      "One order": 1410,
+      "2\u20133 orders": 1147,
+      "4\u20139 orders": 926,
+      "10+ orders": 286
+    },
+    "map_coverage_pct": 100.0,
+    "unmapped_net": 0.0,
+    "prior_window": [
+      "2010-01-01",
+      "2010-11-30"
+    ],
+    "prior_net": 7177991.773,
+    "net_yoy_pct": 0.1967,
+    "orders_yoy_pct": -5.89,
+    "buyers_yoy_pct": -0.92,
+    "gov_yoy_pct": 7.68,
+    "credit_rate_change_pp": 1.1
+  },
+  "international_2011_complete": {
+    "current_window": [
+      "2011-01-01",
+      "2011-11-30"
+    ],
+    "filters": {
+      "market": "International"
+    },
+    "net": 1380714.03,
+    "gross": 1409159.55,
+    "credits": 28445.52,
+    "orders": 1690,
+    "buyers": 399,
+    "gross_order_value": 833.82,
+    "credit_rate_pct": 2.019,
+    "id_coverage_pct": 98.1,
+    "unidentified_pct": 1.9,
+    "repeat_share_pct": 62.66,
+    "bands": {
+      "One order": 149,
+      "2\u20133 orders": 126,
+      "4\u20139 orders": 100,
+      "10+ orders": 24
+    },
+    "map_coverage_pct": 98.17,
+    "unmapped_net": 25310.4,
+    "prior_window": [
+      "2010-01-01",
+      "2010-11-30"
+    ],
+    "prior_net": 1199746.051,
+    "net_yoy_pct": 15.0839,
+    "orders_yoy_pct": 22.73,
+    "buyers_yoy_pct": 23.53,
+    "gov_yoy_pct": -8.07,
+    "credit_rate_change_pp": -1.93
+  },
+  "netherlands_2011_complete": {
+    "current_window": [
+      "2011-01-01",
+      "2011-11-30"
+    ],
+    "filters": {
+      "country_name": "Netherlands"
+    },
+    "net": 262997.04,
+    "gross": 263406.84,
+    "credits": 409.8,
+    "orders": 87,
+    "buyers": 8,
+    "gross_order_value": 3027.66,
+    "credit_rate_pct": 0.156,
+    "id_coverage_pct": 100.0,
+    "unidentified_pct": 0.0,
+    "repeat_share_pct": 62.5,
+    "bands": {
+      "One order": 3,
+      "2\u20133 orders": 2,
+      "4\u20139 orders": 2,
+      "10+ orders": 1
+    },
+    "map_coverage_pct": 100.0,
+    "unmapped_net": 0.0,
+    "prior_window": [
+      "2010-01-01",
+      "2010-11-30"
+    ],
+    "prior_net": 247570.16,
+    "net_yoy_pct": 6.2313,
+    "orders_yoy_pct": -25.64,
+    "buyers_yoy_pct": -63.64,
+    "gov_yoy_pct": 41.22,
+    "credit_rate_change_pp": -1.15
+  },
+  "regency_cakestand_2011_complete": {
+    "current_window": [
+      "2011-01-01",
+      "2011-11-30"
+    ],
+    "filters": {
+      "stock": "22423"
+    },
+    "net": 131847.16,
+    "gross": 140467.66,
+    "credits": 8620.5,
+    "orders": 1757,
+    "buyers": 836,
+    "gross_order_value": 79.95,
+    "credit_rate_pct": 6.137,
+    "id_coverage_pct": 85.54,
+    "unidentified_pct": 14.46,
+    "repeat_share_pct": 34.69,
+    "bands": {
+      "One order": 546,
+      "2\u20133 orders": 205,
+      "4\u20139 orders": 77,
+      "10+ orders": 8
+    },
+    "map_coverage_pct": 99.59,
+    "unmapped_net": 543.3,
+    "prior_window": [
+      "2010-01-01",
+      "2010-11-30"
+    ],
+    "prior_net": 149585.53,
+    "net_yoy_pct": -11.8583,
+    "orders_yoy_pct": -8.96,
+    "buyers_yoy_pct": 4.37,
+    "gov_yoy_pct": -1.36,
+    "credit_rate_change_pp": 1.76
+  },
+  "top10_products_2011": [
+    {
+      "stock": "22423",
+      "product": "Regency Cakestand 3 Tier",
+      "net": 131847.16
+    },
+    {
+      "stock": "47566",
+      "product": "Party Bunting",
+      "net": 96117.66
+    },
+    {
+      "stock": "85123A",
+      "product": "White Hanging Heart T-Light Holder",
+      "net": 87530.53
+    },
+    {
+      "stock": "85099B",
+      "product": "Jumbo Bag Red Retrospot",
+      "net": 86007.74
+    },
+    {
+      "stock": "23084",
+      "product": "Rabbit Night Light",
+      "net": 57058.18
+    },
+    {
+      "stock": "84879",
+      "product": "Assorted Colour Bird Ornament",
+      "net": 52657.33
+    },
+    {
+      "stock": "22502",
+      "product": "Picnic Basket Wicker Small",
+      "net": 49902.66
+    },
+    {
+      "stock": "22086",
+      "product": "Paper Chain Kit 50'S Christmas",
+      "net": 47660.03
+    },
+    {
+      "stock": "79321",
+      "product": "Chilli Lights",
+      "net": 43606.23
+    },
+    {
+      "stock": "22197",
+      "product": "Small Popcorn Holder",
+      "net": 42933.81
+    }
+  ],
+  "top10_total": 695321.33,
+  "top10_share_of_net_pct": 8.11,
+  "heatmap_blank_cells": {
+    "22423": [],
+    "47566": [],
+    "85123A": [],
+    "85099B": [],
+    "23084": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "84879": [],
+    "22502": [
+      10,
+      11
+    ],
+    "22086": [],
+    "79321": [],
+    "22197": []
+  },
+  "heatmap_negative_cells": {
+    "22086": [
+      4
+    ]
+  },
+  "international_top8_2011": {
+    "Netherlands": 262997.04,
+    "Ireland": 243577.03,
+    "Germany": 181191.52,
+    "France": 167195.97,
+    "Australia": 135984.9,
+    "Switzerland": 51258.13,
+    "Spain": 49799.49,
+    "Belgium": 33782.62
+  },
+  "uk_share_of_default_net_pct": 83.89,
+  "peak_month_2011_complete": "2011-11",
+  "peak_month_net": 1427124.54,
+  "monthly_net_2011": {
+    "2011-01": 578855.19,
+    "2011-02": 499464.35,
+    "2011-03": 679329.21,
+    "2011-04": 482061.93,
+    "2011-05": 731004.77,
+    "2011-06": 723845.14,
+    "2011-07": 676812.08,
+    "2011-08": 701289.93,
+    "2011-09": 1011339.74,
+    "2011-10": 1061701.22,
+    "2011-11": 1427124.54
+  },
+  "unidentified_uk_pct_of_gross": 15.72,
+  "gov_unknown_uk": 1035.91,
+  "gov_known_uk": 430.34,
+  "unidentified_international_pct_of_gross": 1.9,
+  "gov_unknown_international": 593.69,
+  "gov_known_international": 840.39,
+  "largest_credits_2011_complete": [
+    {
+      "invoice": "C541433",
+      "date": "2011-01-18",
+      "credit": 77183.6
+    },
+    {
+      "invoice": "C550456",
+      "date": "2011-04-18",
+      "credit": 22998.4
+    },
+    {
+      "invoice": "C570556",
+      "date": "2011-10-11",
+      "credit": 9466.56
+    }
+  ],
+  "largest_credits_partial_dec_2011": [
+    {
+      "invoice": "C581484",
+      "date": "2011-12-09",
+      "credit": 168469.6
+    },
+    {
+      "invoice": "C580971",
+      "date": "2011-12-06",
+      "credit": 664.86
+    },
+    {
+      "invoice": "C580954",
+      "date": "2011-12-06",
+      "credit": 436.2
+    }
+  ],
+  "partial_credit_share_of_largest_invoice_pct": 96.8,
+  "largest_partial_credit_detail": {
+    "stock": "23843",
+    "qty": -80995,
+    "date": "2011-12-09",
+    "matching_sales": [
+      {
+        "InvoiceNo": "581483",
+        "Date": "2011-12-09"
+      }
+    ]
+  },
+  "partial_credit_rate_without_largest_pct": 0.91,
+  "pair_jan_2011_in_default": {
+    "sale_invoice": "541431",
+    "credit_invoice": "C541433",
+    "sale_value": 77183.6,
+    "credit_value": 77183.6,
+    "credit_rate_with_pair_pct": 3.21,
+    "credit_rate_without_pair_pct": 2.36,
+    "gov_with_pair": 508.82,
+    "gov_without_pair": 504.42
+  },
+  "pair_dec_2011_in_partial": {
+    "sale_invoice": "581483",
+    "credit_invoice": "C581484",
+    "sale_value": 168469.6,
+    "credit_value": 168469.6,
+    "credit_rate_with_pair_pct": 28.33,
+    "credit_rate_without_pair_pct": 1.26,
+    "gov_with_pair": 753.05,
+    "gov_without_pair": 547.27
+  },
+  "pair_jan_2011_share_of_default_credits_pct": 27.2,
+  "unmapped_net_by_country_2011_complete": {
+    "Channel Islands": 19418.71,
+    "Unspecified": 4740.94,
+    "European Community": 1150.75
+  },
+  "unknown_customer_sales_rows_all_history": 227089,
+  "original_measure_partial_dec_2011_yoy_pct": -41.9,
+  "original_measure_2010_yoy_pct": 1073.8,
+  "dec_2010_full_month_net": 758090.5,
+  "calendar_2009_net_dec_only": 778343.08,
+  "unidentified_share_default_pct": 13.52,
+  "checks": [
+    {
+      "check": "net = gross - credits on every row",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "sales rows positive qty, credits negative qty, never both",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "credit rows are C-prefixed invoices, sale rows are not",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "all unit prices > 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no non-merchandise or GIFT_ stock codes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "invoice numbers match ^C?\\d{6}$",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "dimension keys unique",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no orphan keys in Sales",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "unknown customers retained, not deleted",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "RowAudit included rows = Sales rows",
+      "pass": true,
+      "detail": "1021272 vs 1021272"
+    },
+    {
+      "check": "RowAudit accounts for 1,067,371 source rows",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "default net \u00a38,572,828.10",
+      "pass": true,
+      "detail": 8572828.103
+    },
+    {
+      "check": "default orders 17,407 / buyers 4,168",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "default like-for-like +2.3%",
+      "pass": true,
+      "detail": 2.3287
+    },
+    {
+      "check": "default gross order value shows as \u00a3509",
+      "pass": true,
+      "detail": 508.82
+    },
+    {
+      "check": "default credit/gross 3.2%",
+      "pass": true,
+      "detail": 3.209
+    },
+    {
+      "check": "default customer-ID coverage 86.5% of gross",
+      "pass": true,
+      "detail": 86.48
+    },
+    {
+      "check": "default repeat share 62.6%",
+      "pass": true,
+      "detail": 62.6
+    },
+    {
+      "check": "default bands 1,559 / 1,273 / 1,026 / 310",
+      "pass": true,
+      "detail": {
+        "One order": 1559,
+        "2\u20133 orders": 1273,
+        "4\u20139 orders": 1026,
+        "10+ orders": 310
+      }
+    },
+    {
+      "check": "default map coverage 99.7%",
+      "pass": true,
+      "detail": 99.7
+    },
+    {
+      "check": "partial +9.8%, \u00a3440,399.56 vs \u00a3401,141.88",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "partial credit rate 28.3%, ID gap 16.6%, GOV \u00a3753",
+      "pass": true,
+      "detail": [
+        28.331,
+        16.64,
+        753.05
+      ]
+    },
+    {
+      "check": "2010: \u00a39.14M, 19,627 orders, 4,205 buyers, no PY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "UK \u00a37.19M, +0.2%",
+      "pass": true,
+      "detail": 0.1967
+    },
+    {
+      "check": "International \u00a31.38M, 1,690 orders, 399 buyers, +15.1%",
+      "pass": true,
+      "detail": 15.0839
+    },
+    {
+      "check": "Netherlands \u00a3262,997.04, 87 orders, 8 buyers, +6.2%",
+      "pass": true,
+      "detail": 6.2313
+    },
+    {
+      "check": "Regency Cakestand \u00a3131.85K, 1,757 orders",
+      "pass": true,
+      "detail": [
+        131847.16,
+        1757
+      ]
+    },
+    {
+      "check": "top-10 product total \u00a3695.3K",
+      "pass": true,
+      "detail": 695321.33
+    },
+    {
+      "check": "top-10 share of default net rounds to 8.1%",
+      "pass": true,
+      "detail": 8.11
+    },
+    {
+      "check": "international top 8 order",
+      "pass": true,
+      "detail": [
+        "Netherlands",
+        "Ireland",
+        "Germany",
+        "France",
+        "Australia",
+        "Switzerland",
+        "Spain",
+        "Belgium"
+      ]
+    },
+    {
+      "check": "original measure: partial Dec 2011 = -41.9%",
+      "pass": true,
+      "detail": -41.9
+    },
+    {
+      "check": "original measure: 2010 = +1,073.8%",
+      "pass": true,
+      "detail": 1073.8
+    }
+  ],
+  "summary": "32/32 checks passed"
+}

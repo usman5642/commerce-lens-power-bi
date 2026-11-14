@@ -1,0 +1,6 @@
+EVALUATE UNION(
+CALCULATETABLE(ROW("Case","2011 complete","Net",[Net Merchandise Sales],"PY",[CL Net Sales PY],"Caption",[CL Net sales vs prior year],"Map",[CL Map Coverage Label]),TREATAS({2011},'Date'[Year]),TREATAS({"Complete"},'Date'[CompleteMonth])),
+CALCULATETABLE(ROW("Case","2010 complete","Net",[Net Merchandise Sales],"PY",[CL Net Sales PY],"Caption",[CL Net sales vs prior year],"Map",[CL Map Coverage Label]),TREATAS({2010},'Date'[Year]),TREATAS({"Complete"},'Date'[CompleteMonth])),
+CALCULATETABLE(ROW("Case","empty dates","Net",[Net Merchandise Sales],"PY",[CL Net Sales PY],"Caption",[CL Net sales vs prior year],"Map",[CL Map Coverage Label]),TREATAS({2010},'Date'[Year]),TREATAS({"Partial / outside source"},'Date'[CompleteMonth])),
+CALCULATETABLE(ROW("Case","multiple years","Net",[Net Merchandise Sales],"PY",[CL Net Sales PY],"Caption",[CL Net sales vs prior year],"Map",[CL Map Coverage Label]),TREATAS({2010,2011},'Date'[Year]),TREATAS({"Complete"},'Date'[CompleteMonth]))
+)

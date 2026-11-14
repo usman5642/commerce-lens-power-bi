@@ -1,0 +1,61 @@
+{
+  "default_2011": {
+    "net": "8572828.1030",
+    "gross": "8857090.0430",
+    "credits": "284261.9400",
+    "orders": 17407,
+    "buyers": 4168
+  },
+  "prior_default": {
+    "net": "8377737.8240",
+    "gross": "8598741.1540",
+    "credits": "221003.3300",
+    "orders": 18077,
+    "buyers": 4127
+  },
+  "partial_2011": {
+    "net": "440399.5600",
+    "gross": "614490.9200",
+    "credits": "174091.3600",
+    "orders": 816,
+    "buyers": 614
+  },
+  "prior_partial": {
+    "net": "401141.8800",
+    "gross": "408004.9300",
+    "credits": "6863.0500",
+    "orders": 830,
+    "buyers": 572
+  },
+  "full_2010": {
+    "net": "9135828.3240",
+    "gross": "9374379.5140",
+    "credits": "238551.1900",
+    "orders": 19627,
+    "buyers": 4205
+  },
+  "uk_2011": {
+    "net": "7192114.0730",
+    "gross": "7447930.4930",
+    "credits": "255816.4200",
+    "orders": 15717,
+    "buyers": 3769
+  },
+  "international_2011": {
+    "net": "1380714.0300",
+    "gross": "1409159.5500",
+    "credits": "28445.5200",
+    "orders": 1690,
+    "buyers": 399
+  },
+  "netherlands_2011": {
+    "net": "262997.0400",
+    "gross": "263406.8400",
+    "credits": "409.8000",
+    "orders": 87,
+    "buyers": 8
+  },
+  "top10_product_total": "695321.3300",
+  "regency_cakestand_net": "131847.1600",
+  "status": "PASS: 9 reconciliation assertions"
+}
